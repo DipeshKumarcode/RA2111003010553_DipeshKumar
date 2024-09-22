@@ -42,8 +42,8 @@ const App = () => {
         ...(parsedData.file_b64 && { file_b64: parsedData.file_b64 }) // Conditionally add `file_b64` if it exists
       };
 
-      // Send the payload to the backend
-      const response = await axios.post('http://127.0.0.1:3000/bfhl', payload);
+      // Update the URL to point to your deployed backend on Render
+      const response = await axios.post('https://ra2111003010553-dipeshkumar.onrender.com/bfhl', payload);
       setResponseData(response.data);
       setLoading(false); // Set loading to false when data is received
     } catch (err) {
