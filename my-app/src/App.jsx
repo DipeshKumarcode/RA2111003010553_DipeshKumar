@@ -1,64 +1,61 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import Select from 'react-select'; // Import react-select for the dropdown
-import './App.css'; // Import your custom styles
+import Select from 'react-select'; 
+import './App.css'; 
 
 const options = [
   { value: 'Numbers', label: 'Numbers' },
   { value: 'Alphabets', label: 'Alphabets' },
-  { value: 'Highest Lowercase Alphabet', label: 'Highest Lowercase Alphabet' }, // Update for highest lowercase alphabet
+  { value: 'Highest Lowercase Alphabet', label: 'Highest Lowercase Alphabet' }, 
 ];
 
 const App = () => {
-  const [inputData, setInputData] = useState(''); // Same input for both `data` and optional `file_b64`
+  const [inputData, setInputData] = useState(''); 
   const [responseData, setResponseData] = useState(null);
   const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false); // New loading state
+  const [loading, setLoading] = useState(false); 
   const [selectedOptions, setSelectedOptions] = useState([]);
 
-  // Handle input change
   const handleInputChange = (e) => {
     setInputData(e.target.value);
   };
 
-  // Handle form submission
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const parsedData = JSON.parse(inputData);
 
-      // Validate that the "data" field is present and is an array
       if (!Array.isArray(parsedData.data)) {
         setError('Invalid JSON input. "data" should be an array.');
         return;
       }
 
       setError('');
-      setLoading(true); // Set loading to true when submit is clicked
+      setLoading(true); 
 
-      // Prepare the payload to send to the backend
+
       const payload = {
-        data: parsedData.data, // Always send `data`
-        ...(parsedData.file_b64 && { file_b64: parsedData.file_b64 }) // Conditionally add `file_b64` if it exists
+        data: parsedData.data, 
+        ...(parsedData.file_b64 && { file_b64: parsedData.file_b64 }) 
       };
 
-      // Update the URL to point to your deployed backend on Render
+
       const response = await axios.post('https://ra2111003010553-dipeshkumar.onrender.com/bfhl', payload);
       setResponseData(response.data);
-      setLoading(false); // Set loading to false when data is received
+      setLoading(false); 
     } catch (err) {
-      setLoading(false); // Set loading to false in case of error
+      setLoading(false); 
       setError('Invalid JSON format.');
     }
   };
 
-  // Handle multi-select dropdown change
+
   const handleOptionChange = (selected) => {
     const values = selected.map(option => option.value);
     setSelectedOptions(values);
   };
 
-  // Render filtered response based on selected options
   const renderFilteredResponse = () => {
     if (!responseData) return null;
 
@@ -71,7 +68,7 @@ const App = () => {
       filteredResponse.alphabets = responseData.alphabets;
     }
     if (selectedOptions.includes('Highest Lowercase Alphabet')) {
-      filteredResponse.highest_lowercase_alphabet = responseData.highest_lowercase_alphabet; // Updated key
+      filteredResponse.highest_lowercase_alphabet = responseData.highest_lowercase_alphabet;
     }
 
     return (
@@ -86,13 +83,12 @@ const App = () => {
 
   return (
     <div className="container">
-      {/* API Input Section */}
       <div className="label-container">
         <label htmlFor="jsonInput">API Input</label>
         <div className="box-container">
           <textarea
             id="jsonInput"
-            placeholder='Enter Data and file type' // Placeholder with only `data`
+            placeholder='Enter Data and file type' 
             value={inputData}
             onChange={handleInputChange}
             rows="6"
@@ -107,7 +103,6 @@ const App = () => {
         {loading ? 'Loading...' : 'Submit'}
       </button>
 
-      {/* Multi Filter Section */}
       {responseData && (
         <div className="select-container">
           <label htmlFor="multiFilter">Multi Filter</label>
