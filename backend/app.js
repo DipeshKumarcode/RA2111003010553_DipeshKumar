@@ -3,21 +3,21 @@ const cors = require('cors');
 const app = express();
 
 // Middleware
-app.use(express.json({ limit: '10mb' })); // Support JSON-encoded bodies (limit size for safety)
+app.use(express.json({ limit: '10mb' })); 
 app.use(cors({
-    origin: '*', // Allow all origins
+    origin: '*', 
     methods: ['POST', 'GET'],
     credentials: true
 }));
 
-// Utility function to validate base64 file
+
 function validateBase64File(base64String) {
     try {
         const parts = base64String.split(';base64,');
         if (parts.length !== 2) {
             return { isValid: false, mimeType: 'invalid', sizeKb: 0 };
         }
-        const mimeType = parts[0].split(':')[1]; // Extract MIME type from the prefix
+        const mimeType = parts[0].split(':')[1]; 
         const base64Data = parts[1];
         const buffer = Buffer.from(base64Data, 'base64');
         const fileSizeKb = (buffer.length / 1024).toFixed(2);
@@ -31,7 +31,6 @@ function validateBase64File(base64String) {
     }
 }
 
-// POST request handler
 app.post('/bfhl', (req, res) => {
     const { data, file_b64 } = req.body;
 
@@ -84,14 +83,14 @@ app.post('/bfhl', (req, res) => {
     });
 });
 
-// GET request handler
+
 app.get('/bfhl', (req, res) => {
     res.status(200).json({
         operation_code: 1
     });
 });
 
-// Start the server
+
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
     console.log(`Server is running on http://127.0.0.1:${port}`);
