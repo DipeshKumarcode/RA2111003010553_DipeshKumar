@@ -92,7 +92,7 @@ const App = () => {
         <div className="box-container">
           <textarea
             id="jsonInput"
-            placeholder='{"data": ["M", "1", "334", "4", "B", "Z", "a"]}' // Placeholder with only `data`
+            placeholder='Enter Data and file type' // Placeholder with only `data`
             value={inputData}
             onChange={handleInputChange}
             rows="6"
